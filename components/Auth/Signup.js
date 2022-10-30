@@ -22,42 +22,42 @@ const Signup = () => {
               </div>
             </div>
           </div>
-          <div class="flex items-center h-screen w-full">
-      <div class="w-full bg-white rounded shadow-lg p-8 m-4 md:max-w-sm md:mx-auto">
-      <span class="block w-full text-xl uppercase font-bold mb-4">Enter User Detail</span>      
-        <form class="mb-4" action="/" method="post">
-          <div class="mb-4 md:w-full">
-            <label for="email" class="block text-xs mb-1">Username</label>
-            <input class="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
+          <div className="flex items-center h-screen w-full">
+      <div className="w-full bg-white rounded shadow-lg p-8 m-4 md:max-w-sm md:mx-auto">
+      <span className="block w-full text-xl uppercase font-bold mb-4">Enter User Detail</span>      
+        <form className="mb-4" action="/" method="post">
+          <div className="mb-4 md:w-full">
+            <label htmlFor="email" className="block text-xs mb-1">Username</label>
+            <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
           </div>
-          <div class="mb-4 md:w-full">
-            <label for="email" class="block text-xs mb-1">Email</label>
-            <input class="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
+          <div className="mb-4 md:w-full">
+            <label htmlFor="email" className="block text-xs mb-1">Email</label>
+            <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
           </div>
-          <div class="mb-4 md:w-full">
-            <label for="email" class="block text-xs mb-1">Roll Number</label>
-            <input class="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
+          <div className="mb-4 md:w-full">
+            <label htmlFor="email" className="block text-xs mb-1">Roll Number</label>
+            <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
           </div>
-          <div class="mb-4 md:w-full">
-            <label for="email" class="block text-xs mb-1">Gender</label>
-            <input class="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
+          <div className="mb-4 md:w-full">
+            <label htmlFor="email" className="block text-xs mb-1">Gender</label>
+            <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
           </div>
-          <div class="mb-4 md:w-full">
-            <label for="email" class="block text-xs mb-1">Age</label>
-            <input class="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
+          <div className="mb-4 md:w-full">
+            <label htmlFor="email" className="block text-xs mb-1">Age</label>
+            <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
           </div>
         
-          <div class="mb-6 md:w-full">
-            <label for="password" class="block text-xs mb-1">Password</label>
-            <input class="w-full border rounded p-2 outline-none focus:shadow-outline" type="password" name="password" id="password" placeholder="Password"/>
+          <div className="mb-6 md:w-full">
+            <label htmlFor="password" className="block text-xs mb-1">Password</label>
+            <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="password" name="password" id="password" placeholder="Password"/>
           </div>
-          <div class="mb-6 md:w-full">
-            <label for="password" class="block text-xs mb-1">Confirm Password</label>
-            <input class="w-full border rounded p-2 outline-none focus:shadow-outline" type="password" name="password" id="password" placeholder="Password"/>
+          <div className="mb-6 md:w-full">
+            <label htmlFor="password" className="block text-xs mb-1">Confirm Password</label>
+            <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="password" name="password" id="password" placeholder="Password"/>
           </div>
-          <button class="bg-blue-500 hover:bg-blue-700 text-white uppercase text-sm font-semibold px-4 py-2 rounded">Sign Up</button>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white uppercase text-sm font-semibold px-4 py-2 rounded">Sign Up</button>
         </form>
-        <a class="text-blue-700 text-center text-sm" href="/login">Forgot password?</a>
+        <a className="text-blue-700 text-center text-sm" href="/login">Forgot password?</a>
     </div>
   </div>
   </div>
