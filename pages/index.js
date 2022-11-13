@@ -1,11 +1,14 @@
 import Head from 'next/head'
-import Login from '../components/Auth/Login'
-import Signup from '../components/Auth/Signup'
+import Login from './Login'
+import Signup from './Signup'
+import Main from './main'
 export default function Home() {
   return (
     <>
-    <Login/>
+    {/* <Login/> */}
    {/* <Signup/> */}
+   <Main/>
+
     </>
   )
 }
