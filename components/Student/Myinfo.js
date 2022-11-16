@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import axios from 'axios'
 const Myinfo = ({role,student}) => {
   const data = JSON.stringify( student.value);
-  console.log("Inside info "+data[0]);
+  console.log("Inside info "+Json);
   return (
     <div className='min-h-screen'>
   <div className="flex-grow text-gray-800">
