@@ -1,11 +1,111 @@
 import React,{useState}  from 'react'
+import { useRouter } from 'next/router';
 import Link from 'next/link'; 
 import Image from 'next/image'
 import {MdHelpOutline} from 'react-icons/md';
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 const Signup = () => {
-  const [state,setState] = useState("none");
+  const router = useRouter();
+  const onChangeHanlder = (e)=>{
+   if(e.target.name=="Age"){
+    setAge(e.target.value);
+   }
+   else if(e.target.name=="Name"){
+    setName(e.target.value);
+   }
+   else if(e.target.name=="Email"){
+    setEmail(e.target.value);
+   }
+   else if(e.target.name=="Password"){
+    setPassword(e.target.value);
+   }
+   else if(e.target.name=="Cpassword"){
+    setCpassword(e.target.value);
+   }
+   else if(e.target.name=="Gender"){
+    setGender(e.target.value);
+   }
+   else if(e.target.name=="Reg"){
+    setReg(e.target.value);
+   }
+  }
+  function ValidateEmail(mail) 
+{
+ if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+  {
+    return (true)
+  }
+    return (false)
+}
+  const submitHandler = async (e)=>{
+    e.preventDefault();
+    const data = {name,email,age,password,cpassword,gender,reg,state};
+    if(ValidateEmail(email) && password===cpassword && age>8 && state!='none'){
+      
+      let res = await fetch('http://localhost:3000/api/register',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+        },
+        body:JSON.stringify({name,email,password,gender,state,age,reg}),
+      })
+     let response = await res.json()
+     if(response.success){
+     toast.success('User Registered Successfully', {
+      position: "top-left",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      });
+      router.push('/Login');
+    }
+    else{
+      toast.error(response.message, {
+        position: "top-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    }
+
+    }else{
+      alert("Invalid Email");
+
+    }
+  }
+  const [state,setState] = useState('none');
+  const[age,setAge] = useState('')
+  const[name,setName] = useState('')
+  const[email,setEmail] = useState('')
+  const[password,setPassword] = useState('')
+  const[cpassword,setCpassword] = useState('')
+  const[reg,setReg] = useState('')
+  const[gender,setGender] = useState('')
   return (
     <>
+    <ToastContainer
+position="top-left"
+autoClose={2000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="colored"
+/>
+{/* Same as */}
+<ToastContainer />
     <div className='flex justify-between md:px-8 px-2 items-center py-2'>
       <div>
       <Image height={70} width={150} className="top-2 left-3" src={'/spas-logo.png'}/>
@@ -18,7 +118,7 @@ const Signup = () => {
     <div className=" bg-gradient-to-b from-sky-300 to-gray-200 min-h-screen flex justify-center">
         {/* For Form Design Part */}
 
-        <div className="Form-Part   md:mt-0 mt-4 md:w-[80%] md:h-[100vh] ">
+        <div className="Form-Part   md:mt-0 mt-4 md:w-[80%]  ">
           <div className="wrapper ">
             <div className="w-[80%] mx-auto md:w-full bg-white rounded shadow-md py-14 px-4 md:px-14 md:m-4 md:max-w-lg md:mx-auto">
               <div className="Account-Type">
@@ -50,34 +150,34 @@ const Signup = () => {
                   <span className="block w-full text-xl text-center uppercase font-bold mb-4">
                     Enter User Detail
                   </span>
-                  <form className="mb-4" action="/" method="post">
+                  <form className="mb-4" method='post'  onSubmit={submitHandler}>
                    
                          <div className="mb-4 md:w-full">
-      <label htmlFor="email" className="block text-xs mb-1">Username</label>
-       <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
+      <label htmlFor="name" className="block text-xs mb-1">Username</label>
+       <input onChange={onChangeHanlder}  className="w-full border rounded p-2 outline-none focus:shadow-outline" autoComplete="off" type="text" name="Name" id="name" placeholder="Full Username" required/>
       </div>
       <div className="mb-4 md:w-full">
         <label htmlFor="email" className="block text-xs mb-1">Email</label>
-        <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
+        <input onChange={onChangeHanlder}   className="w-full border rounded p-2 outline-none focus:shadow-outline" autoComplete="off" type="email" name="Email" id="email" placeholder="User Email" required/>
       </div>
       <div className="mb-4 md:w-full">
-        <label htmlFor="email" className="block text-xs mb-1">Teacher Registration Number</label>
-        <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
+        <label htmlFor="reg" className="block text-xs mb-1">Teacher Registration Number</label>
+        <input onChange={onChangeHanlder}  className="w-full border rounded p-2 outline-none focus:shadow-outline" autoComplete="off" type="text" name="Reg" id="reg" placeholder="Teacher ID" required/>
      </div>
       <div className="mb-4 md:w-full">
-        <label htmlFor="email" className="block text-xs mb-1">Gender</label>
-        <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
+        <label htmlFor="gender" className="block text-xs mb-1">Gender</label>
+        <input onChange={onChangeHanlder}  className="w-full border rounded p-2 outline-none focus:shadow-outline" autoComplete="off" type="text" name="Gender" id="gender" placeholder="Enter Gender"/>
       </div>
       <div className="mb-4 md:w-full">
-        <label htmlFor="email" className="block text-xs mb-1">Age</label>
-        <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
+        <label htmlFor="age" className="block text-xs mb-1">Age</label>
+        <input onChange={onChangeHanlder}  className="w-full border rounded p-2 outline-none focus:shadow-outline" autoComplete="off" type="number" name="Age" id="age" placeholder="Enter User Age" required/>
      </div>
         
      <div className="mb-6 md:w-full">
        <label htmlFor="password" className="block text-xs mb-1">Password</label>
-       <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="password" name="password" id="password" placeholder="Password"/>      </div>
+       <input onChange={onChangeHanlder}  className="w-full border rounded p-2 outline-none focus:shadow-outline" autoComplete="off" type="password" name="Password" id="password" placeholder="Password" required/>      </div>
      <div className="mb-6 md:w-full">
-       <label htmlFor="password" className="block text-xs mb-1">Confirm Password</label>        <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="password" name="password" id="password" placeholder="Password"/>   
+       <label htmlFor="cpassword" className="block text-xs mb-1">Confirm Password</label>        <input onChange={onChangeHanlder}  autoComplete="off" className="w-full border rounded p-2 outline-none focus:shadow-outline" required type="password" name="Cpassword" id="cpassword" placeholder="Confirm Password"/>   
           </div>    
             <button className="bg-blue-500 hover:bg-blue-700 text-white uppercase text-sm font-semibold px-4 py-2 rounded">Sign Up</button>
                  </form></div>:
@@ -85,34 +185,34 @@ const Signup = () => {
                   <span className="block w-full text-xl text-center uppercase font-bold mb-4">
                     Enter User Detail
                   </span>
-                  <form className="mb-4" action="/" method="post">              <div className="mb-4 md:w-full">
-           <label htmlFor="email" className="block text-xs mb-1">Username</label>
-           <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
+                  <form className="mb-4" method='post' onChange={onChangeHanlder}>              <div className="mb-4 md:w-full">
+           <label htmlFor="name" className="block text-xs mb-1">Username</label>
+           <input onChange={onChangeHanlder} className="w-full border rounded p-2 outline-none focus:shadow-outline" autoComplete="off" type="text" name="Name" id="name" required placeholder="Full Studentname"/>
          </div>
          <div className="mb-4 md:w-full">
            <label htmlFor="email" className="block text-xs mb-1">Email</label>
-           <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
+           <input onChange={onChangeHanlder} className="w-full border rounded p-2 outline-none focus:shadow-outline" autoComplete="off" type="email" name="Email" id="email" required placeholder="Student Email"/>
          </div>
          <div className="mb-4 md:w-full">
-           <label htmlFor="email" className="block text-xs mb-1">Roll Number</label>
-         <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
+           <label htmlFor="roll" className="block text-xs mb-1">Roll Number</label>
+         <input onChange={onChangeHanlder} className="w-full border rounded p-2 outline-none focus:shadow-outline" autoComplete="off" type="text" name="Roll" id="roll" required placeholder="Student Roll Number"/>
        </div>
        <div className="mb-4 md:w-full">
-        <label htmlFor="email" className="block text-xs mb-1">Gender</label>
-         <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
+        <label htmlFor="gender" className="block text-xs mb-1">Gender</label>
+         <input onChange={onChangeHanlder} className="w-full border rounded p-2 outline-none focus:shadow-outline" autoComplete="off" type="text" name="Gender" id="gender" placeholder="Gender"/>
        </div>
        <div className="mb-4 md:w-full">
-         <label htmlFor="email" className="block text-xs mb-1">Age</label>
-         <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="email" name="email" id="email" placeholder="Username or Email"/>
+         <label htmlFor="age" className="block text-xs mb-1">Age</label>
+         <input onChange={onChangeHanlder} className="w-full border rounded p-2 outline-none focus:shadow-outline" autoComplete="off" type="number" name="Age" id="age" required placeholder="Student Age"/>
         </div>
         
           <div className="mb-6 md:w-full">
             <label htmlFor="password" className="block text-xs mb-1">Password</label>
-            <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="password" name="password" id="password" placeholder="Password"/>
+            <input onChange={onChangeHanlder} className="w-full border rounded p-2 outline-none focus:shadow-outline"  autoComplete="off" type="password" name="Password" required id="password" placeholder="Password"/>
           </div>
          <div className="mb-6 md:w-full">
-            <label htmlFor="password" className="block text-xs mb-1">Confirm Password</label>
-            <input className="w-full border rounded p-2 outline-none focus:shadow-outline" type="password" name="password" id="password" placeholder="Password"/>
+            <label htmlFor="cpassword" className="block text-xs mb-1">Confirm Password</label>
+            <input onChange={onChangeHanlder} className="w-full border rounded p-2 outline-none focus:shadow-outline" autoComplete="off" type="password" name="Cpassword" required id="cpassword" placeholder="Confirm Password"/>
           </div>
           <button className="bg-blue-500 hover:bg-blue-700 text-white uppercase text-sm font-semibold px-4 py-2 rounded">Sign Up</button>
      

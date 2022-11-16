@@ -2,11 +2,108 @@ import Image from "next/image";
 import Link from "next/link";
 import {MdHelpOutline} from 'react-icons/md';
 import React,{useState} from "react";
-const Login = () => {
+import { useRouter } from "next/router";
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+  var jwt = require('jsonwebtoken');
+const Login = ({user,setUser}) => {
+  
+  const route = useRouter();
+
+    const onChangeHanlder = (e)=>{
+     if(e.target.name=="Email"){
+      setEmail(e.target.value);
+     }
+     else if(e.target.name=="Password"){
+      setPassword(e.target.value);
+     }
+     else if(e.target.name=="Reg"){
+      setReg(e.target.value);
+     }
+    }
+    function ValidateEmail(mail) 
+  {
+   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+    {
+      return (true)
+    }
+      return (false)
+  }
+    const submitHandler = async (e)=>{
+      e.preventDefault();
+      const data = {email,password,reg};
+      if(ValidateEmail(email) && state!='none'){
+        
+        let res = await fetch('http://localhost:3000/api/login',{
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+          },
+          body:JSON.stringify({email,password,reg}),
+        })
+        let response = await res.json();
+        if(response.success===true){
+          toast.success('Login Successfully', {
+            position: "top-left",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
+            setEmail('');
+            setPassword('');
+            setReg('');
+            localStorage.setItem('token',response.token);
+            const role = jwt.decode(response.token).role;
+            if(role==='student'){
+          route.push('/Student')}
+          else{
+            route.push('/Teacher')
+          }
+        }
+        else{
+          toast.error(response.message, {
+            position: "top-left",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
+        }
+  
+      }else{
+        alert("Invalid Email");
+  
+      }
+      console.log("submitted");
+      console.log(data);
+    }
   const [state,setState] = useState("none");
+  const[email,setEmail] = useState('')
+  const[password,setPassword] = useState('')
+  const[reg,setReg] = useState('')
   return (
     <>
-
+<ToastContainer
+position="top-left"
+autoClose={2000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="colored"
+/>
+{/* Same as */}
+<ToastContainer />
 <div className='flex justify-between md:px-8 px-2 items-center py-2'>
       <div>
       <Image height={70} width={150} className="top-2 left-3" src={'/spas-logo.png'}/>
@@ -49,17 +146,17 @@ const Login = () => {
                   {(state==="none")?<div className='flex flex-col justify-center items-center'><h1 className="text-center text-xl">Select a Account Type</h1><h1>Don't Have An Account? <Link href={'/Signup'} className='text-blue-400'>Register</Link> Now</h1></div>:(state==="teacher")?
                   <div>
                   <span className="block w-full text-xl text-center uppercase font-bold mb-4">
-                    Enter User Detail
+                    Enter Teacher Login Detail
                   </span>
-                  <form className="mb-4" action="/" method="post">
+                  <form className="mb-4" onSubmit={submitHandler} method='post'>
                     <div className="mb-4 md:w-full">
                       <label htmlFor="email" className="block text-xs mb-1">
                         Email
                       </label>
-                      <input
+                      <input onChange={onChangeHanlder}
                         className="w-full border rounded p-2 outline-none focus:shadow-outline"
                         type="email"
-                        name="email"
+                        name="Email"
                         id="email"
                         placeholder="Teacher Email "
                       />
@@ -67,14 +164,15 @@ const Login = () => {
 
 
                    <div className="mb-4 md:w-full">
-                   <label htmlFor="teachId" className="block text-xs mb-1">
+                   <label htmlFor="reg" className="block text-xs mb-1">
                      Teacher Id
                    </label>
                    <input
+                   onChange={onChangeHanlder}
                      className="w-full border rounded p-2 outline-none focus:shadow-outline"
-                     type="email"
-                     name="teachId"
-                     id="teachId"
+                     type="text"
+                     name="Reg"
+                     id="reg"
                      placeholder="Teacher Registration Number"
                    />
                  </div> 
@@ -83,9 +181,10 @@ const Login = () => {
                         Password
                       </label>
                       <input
+                      onChange={onChangeHanlder}
                         className="w-full border rounded p-2 outline-none focus:shadow-outline"
                         type="password"
-                        name="password"
+                        name="Password"
                         id="password"
                         placeholder="Password"
                       />
@@ -104,30 +203,32 @@ const Login = () => {
                  </form></div>:
                   <div>
                   <span className="block w-full text-xl text-center uppercase font-bold mb-4">
-                    Enter User Detail
+                    Enter Student Login Detail
                   </span>
-                  <form className="mb-4" action="/" method="post">
+                  <form className="mb-4" onSubmit={submitHandler} method='post'>
                     <div className="mb-4 md:w-full">
                       <label htmlFor="email" className="block text-xs mb-1">
                         Email
                       </label>
                       <input
+                      onChange={onChangeHanlder}
                         className="w-full border rounded p-2 outline-none focus:shadow-outline"
                         type="email"
-                        name="email"
+                        name="Email"
                         id="email"
                         placeholder="Student Email"
                       />
                     </div>
                   <div className="mb-4 md:w-full">
-                  <label htmlFor="roll" className="block text-xs mb-1">
+                  <label htmlFor="reg" className="block text-xs mb-1">
                     Roll Number
                   </label>
                   <input
+                  onChange={onChangeHanlder}
                     className="w-full border rounded p-2 outline-none focus:shadow-outline"
                     type="text"
-                    name="roll"
-                    id="roll"
+                    name="Reg"
+                    id="reg"
                     placeholder="Sudent Registration Number"
                   />
                 </div><div className="mb-6 md:w-full">
@@ -135,9 +236,10 @@ const Login = () => {
                         Password
                       </label>
                       <input
+                      onChange={onChangeHanlder}
                         className="w-full border rounded p-2 outline-none focus:shadow-outline"
                         type="password"
-                        name="password"
+                        name="Password"
                         id="password"
                         placeholder="Password"
                       />
